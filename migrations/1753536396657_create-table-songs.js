@@ -22,12 +22,10 @@ export const up = (pgm) => {
     created_at: {
       type: 'TIMESTAMP',
       notNull: true,
-      default: pgm.sql('CURRENT_TIMESTAMP'),
     },
     updated_at: {
       type: 'TIMESTAMP',
       notNull: true,
-      default: pgm.sql('CURRENT_TIMESTAMP'),
     },
   });
 };
