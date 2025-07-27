@@ -19,6 +19,16 @@ export const up = (pgm) => {
     albumId: {
       type: 'VARCHAR(50)', notNull: true, references: 'albums', onDelete: 'CASCADE', onUpdate: 'CASCADE',
     },
+    created_at: {
+      type: 'TIMESTAMP',
+      notNull: true,
+      default: pgm.sql('CURRENT_TIMESTAMP'),
+    },
+    updated_at: {
+      type: 'TIMESTAMP',
+      notNull: true,
+      default: pgm.sql('CURRENT_TIMESTAMP'),
+    },
   });
 };
 

@@ -11,10 +11,21 @@ export const shorthands = undefined;
 export const up = (pgm) => {
   pgm.createTable('albums', {
     id: {
-      type: 'VARCHAR(50)', primaryKey: true,
+      type: 'VARCHAR(50)',
+      primaryKey: true,
     },
     name: { type: 'VARCHAR(50)', notNull: true },
     year: { type: 'integer', notNull: true },
+    created_at: {
+      type: 'TIMESTAMP',
+      notNull: true,
+      default: pgm.sql('CURRENT_TIMESTAMP'),
+    },
+    updated_at: {
+      type: 'TIMESTAMP',
+      notNull: true,
+      default: pgm.sql('CURRENT_TIMESTAMP'),
+    },
   });
 };
 
