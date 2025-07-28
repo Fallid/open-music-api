@@ -1,4 +1,4 @@
-const InvariantError = require('../../../../../joi-plugin/src/exceptions/InvariantError');
+const InvariantError = require('../../exceptions/InvariantError');
 const { AlbumsPayloadSchema } = require('./schema');
 
 const AlbumsValidator = {
