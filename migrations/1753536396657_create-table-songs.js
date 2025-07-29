@@ -16,8 +16,8 @@ export const up = (pgm) => {
     genre: { type: 'VARCHAR(35)', notNull: true },
     performer: { type: 'VARCHAR(40)', notNull: true },
     duration: { type: 'integer', notNull: false },
-    albumId: {
-      type: 'VARCHAR(50)', notNull: true, references: 'albums', onDelete: 'CASCADE', onUpdate: 'CASCADE',
+    album_id: {
+      type: 'VARCHAR(50)', notNull: false, references: 'albums', onDelete: 'CASCADE', onUpdate: 'CASCADE',
     },
     created_at: {
       type: 'TIMESTAMP',
