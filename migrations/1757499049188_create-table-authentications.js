@@ -9,7 +9,7 @@ export const shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
-  pgm.createTable('authentiations', {
+  pgm.createTable('authentications', {
     token: {
       type: 'TEXT',
       notNull: true,
