@@ -14,12 +14,12 @@ class AuthenticationsHandler {
     this._validator.validatePostAuthenticationPayload(request.payload);
 
     const { username, password } = request.payload;
-    const id = await this._usersService.verifyUserCrendential(username, password);
+    const id = await this._usersService.verifyUserCredential(username, password);
 
     const accessToken = this._tokenManager.generateAccessToken({ id });
     const refreshToken = this._tokenManager.generateRefreshToken({ id });
 
-    await this._authenticationsService.addRefreshToken(refreshToken);
+    await this._authenticationsService.addToken(refreshToken);
 
     const response = h.response({
       status: 'success',
