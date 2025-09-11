@@ -35,6 +35,19 @@ class PlaylistsHandler {
       },
     };
   }
+
+  async deletePlaylistByIdHandler(request) {
+    const { id: playlistId } = request.params;
+    const { id: credentialId } = request.auth.credentials;
+
+    await this._service.verifyPlaylistOwner(playlistId, credentialId);
+    await this._service.deletePlaylist(playlistId);
+
+    return {
+      status: 'success',
+      message: 'Playlist berhasil dihapus',
+    };
+  }
 }
 
 module.exports = PlaylistsHandler;
