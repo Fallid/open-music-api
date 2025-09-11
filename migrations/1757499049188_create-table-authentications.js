@@ -23,5 +23,5 @@ export const up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
-  pgm.dropTable('authentiations');
+  pgm.dropTable('authentications');
 };

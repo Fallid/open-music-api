@@ -23,6 +23,14 @@ export const up = (pgm) => {
       type: 'VARCHAR(50)',
       notNull: true,
     },
+    created_at: {
+      type: 'TIMESTAMP',
+      notNull: true,
+    },
+    updated_at: {
+      type: 'TIMESTAMP',
+      notNull: true,
+    },
   });
 
   pgm.addConstraint('collaborations', 'unique_playlist_id_and_user_id', 'UNIQUE(playlist_id, user_id)');
