@@ -1,3 +1,6 @@
+const { PostPlaylistSongPayloadSchema, DeletePlaylistSongPayloadSchema } = require('../../validators/playlist-songs/schema');
+const { PlaylistParamsSchema } = require('../../validators/playlists/schema');
+
 const routes = (handler) => [
   {
     method: 'POST',
@@ -5,6 +8,13 @@ const routes = (handler) => [
     handler: handler.postPlaylistSongsHandler,
     options: {
       auth: 'openmusic_jwt',
+      tags: ['api', 'playlist-songs'],
+      description: 'Endpoint untuk menambahkan lagu ke playlist.',
+      notes: 'Parameter: id (string, path), songId (string, max 50, required)',
+      validate: {
+        params: PlaylistParamsSchema,
+        payload: PostPlaylistSongPayloadSchema,
+      },
     },
   },
   {
@@ -13,6 +23,13 @@ const routes = (handler) => [
     handler: handler.deletePlaylistSongsHandler,
     options: {
       auth: 'openmusic_jwt',
+      tags: ['api', 'playlist-songs'],
+      description: 'Endpoint untuk menghapus lagu dari playlist.',
+      notes: 'Parameter: id (string, path), songId (string, max 50, required)',
+      validate: {
+        params: PlaylistParamsSchema,
+        payload: DeletePlaylistSongPayloadSchema,
+      },
     },
   },
 ];

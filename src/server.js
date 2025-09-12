@@ -1,6 +1,9 @@
 require('dotenv').config();
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
+const Inert = require('@hapi/inert');
+const Vision = require('@hapi/vision');
+const HapiSwagger = require('hapi-swagger');
 // error handler
 const ClientError = require('./exceptions/ClientError');
 // albums plugin
@@ -60,6 +63,34 @@ const init = async () => {
   await server.register([
     {
       plugin: Jwt,
+    },
+    {
+      plugin: Inert,
+    },
+    {
+      plugin: Vision,
+    },
+    {
+      plugin: HapiSwagger,
+      options: {
+        info: {
+          title: 'OpenMusicAPI Documentation',
+          version: '1.0.0',
+          description: 'RESTful API untuk aplikasi manajemen musik yang memungkinkan pengguna mengelola album, lagu, playlist, kolaborasi, dan autentikasi',
+        },
+        documentationPath: '/documentation',
+        jsonPath: '/swagger.json',
+        swaggerUIPath: '/swaggerui/',
+        basePath: '/',
+        grouping: 'tags',
+        sortTags: 'alpha',
+        sortEndpoints: 'method',
+        pathPrefixSize: 2,
+        swaggerUI: true,
+        documentationPage: true,
+        definitionPrefix: 'useLabel',
+        reuseDefinitions: true,
+      },
     },
   ]);
 
@@ -173,6 +204,7 @@ const init = async () => {
 
   await server.start();
   console.log(`Server bejalan pada ${server.info.uri}`);
+  console.log(`API Documentation tersedia di ${server.info.uri}/documentation`);
 };
 
 init();
