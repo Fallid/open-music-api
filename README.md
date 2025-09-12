@@ -81,6 +81,25 @@ Untuk production:
 npm start
 ```
 
+## API Documentation
+
+API documentation tersedia menggunakan Swagger UI:
+- **Development**: http://localhost:5000/documentation
+- **JSON Spec**: http://localhost:5000/swagger.json
+
+Dokumentasi interaktif ini memungkinkan Anda untuk:
+- Melihat semua endpoint yang tersedia
+- Testing API langsung dari browser
+- Melihat schema request/response
+- Autentikasi dengan JWT token
+
+## Autentikasi
+
+API menggunakan JWT (JSON Web Token) untuk autentikasi:
+1. Register user baru di endpoint `/users`
+2. Login di endpoint `/authentications` untuk mendapatkan token
+3. Gunakan token di header `Authorization: Bearer <token>` untuk endpoint yang memerlukan autentikasi
+
 ## Lisensi
 
 Lihat detail lisensi di [LICENSE](./LICENSE)
