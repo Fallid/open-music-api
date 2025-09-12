@@ -1,9 +1,11 @@
 const autoBind = require('auto-bind');
+const { PlaylistActivityAction } = require('../../utils/enum');
 
 class PlaylistSongsHandler {
-  constructor(playlistSongsService, playlistsService, validator) {
+  constructor(playlistSongsService, playlistsService, playlistActivitiesService, validator) {
     this._playlistSongsService = playlistSongsService;
     this._playlistsService = playlistsService;
+    this._playlistActivitiesService = playlistActivitiesService;
     this._validator = validator;
 
     autoBind(this);
@@ -17,7 +19,6 @@ class PlaylistSongsHandler {
 
     await this._playlistsService.verifyPlaylistOwner(playlistId, credentialId);
     const playlistSong = await this._playlistSongsService.addPlaylistSong(playlistId, songId);
-
     const response = h.response({
       status: 'success',
       message: 'Song berhasil ditambahkan ke playlist',
@@ -25,8 +26,11 @@ class PlaylistSongsHandler {
         playlistSong,
       },
     });
-
     response.code(201);
+
+    await this._playlistActivitiesService.addPlaylistActivity({
+      playlistId, songId, userId: credentialId, action: PlaylistActivityAction.ADD,
+    });
     return response;
   }
 
@@ -38,6 +42,10 @@ class PlaylistSongsHandler {
 
     await this._playlistsService.verifyPlaylistOwner(playlistId, credentialId);
     await this._playlistSongsService.deletePlaylistSongByPlaylistIdAndSongId(playlistId, songId);
+
+    await this._playlistActivitiesService.addPlaylistActivity({
+      playlistId, songId, userId: credentialId, action: PlaylistActivityAction.DELETE,
+    });
 
     return {
       status: 'success',
