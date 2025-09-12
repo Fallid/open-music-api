@@ -35,16 +35,35 @@ const mapDBSongsToModel = ({ song_id, song_title, song_performer }) => ({
 });
 
 // Map Playlist
-const mapDBPlaylistToModel = ({
-  id,
-  name,
-  username,
-}) => ({
+const mapDBPlaylistToModel = ({ id, name, username }) => ({
   id,
   name,
   username,
 });
 
+// Map Playlist songs by playlist id
+const mapDBPlaylistSongsToModel = (rows) => {
+  const { id, name, username } = rows[0];
+  const songs = rows
+    .filter((row) => row.song_id)
+    .map((row) => ({
+      id: row.song_id,
+      title: row.song_title,
+      performer: row.song_performer,
+    }));
+
+  return {
+    id,
+    name,
+    username,
+    songs,
+  };
+};
+
 module.exports = {
-  mapDBAlbumsToModel, mapDBSongToModel, mapDBSongsToModel, mapDBPlaylistToModel,
+  mapDBAlbumsToModel,
+  mapDBSongToModel,
+  mapDBSongsToModel,
+  mapDBPlaylistToModel,
+  mapDBPlaylistSongsToModel,
 };

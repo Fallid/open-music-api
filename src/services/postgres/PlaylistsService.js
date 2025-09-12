@@ -1,7 +1,10 @@
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 const InvariantError = require('../../exceptions/InvariantError');
-const { mapDBPlaylistToModel } = require('../../utils');
+const {
+  mapDBPlaylistToModel,
+  mapDBPlaylistSongsToModel,
+} = require('../../utils');
 const NotFoundError = require('../../exceptions/NotFoundError');
 const AuthorizationError = require('../../exceptions/AuthorizationError');
 
@@ -32,7 +35,7 @@ class PlaylistsService {
   async getPlaylists(owner) {
     const query = {
       text: `SELECT pl.id, pl.name, usr.username FROM playlists AS pl
-        LEFT JOIN users AS usr ON usr.id = pl.owner
+        INNER JOIN users AS usr ON usr.id = pl.owner
         WHERE pl.owner = $1`,
       values: [owner],
     };
@@ -75,6 +78,24 @@ class PlaylistsService {
     if (playlist.owner !== owner) {
       throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
     }
+  }
+
+  async getPlaylistSongByPlaylistId({ owner, playlistId }) {
+    const query = {
+      text: `SELECT p.id, p.name, u.username, s.id AS song_id, s.title AS song_title, s.performer AS song_performer FROM playlists p
+      INNER JOIN users u ON p.owner = u.id
+      LEFT JOIN playlist_songs ps ON ps.playlist_id = p.id
+      LEFT JOIN songs s ON s.id = ps.song_id
+      WHERE p.owner = $1 AND p.id = $2`,
+      values: [owner, playlistId],
+    };
+    const result = await this._pool.query(query);
+
+    if (!result.rows.length) {
+      throw new NotFoundError('Playlist tidak ditemukan');
+    }
+
+    return mapDBPlaylistSongsToModel(result.rows);
   }
 }
 
