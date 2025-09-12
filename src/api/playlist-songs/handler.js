@@ -1,8 +1,12 @@
 const autoBind = require('auto-bind');
-const { PlaylistActivityAction } = require('../../utils/enum');
 
 class PlaylistSongsHandler {
-  constructor(playlistSongsService, playlistsService, playlistActivitiesService, validator) {
+  constructor(
+    playlistSongsService,
+    playlistsService,
+    playlistActivitiesService,
+    validator,
+  ) {
     this._playlistSongsService = playlistSongsService;
     this._playlistsService = playlistsService;
     this._playlistActivitiesService = playlistActivitiesService;
@@ -17,8 +21,12 @@ class PlaylistSongsHandler {
     const { id: playlistId } = request.params;
     const { songId } = request.payload;
 
-    await this._playlistsService.verifyPlaylistOwner(playlistId, credentialId);
-    const playlistSong = await this._playlistSongsService.addPlaylistSong(playlistId, songId);
+    await this._playlistsService.verifyPlaylistAccess(playlistId, credentialId);
+    const playlistSong = await this._playlistSongsService.addPlaylistSong(
+      playlistId,
+      songId,
+      credentialId,
+    );
     const response = h.response({
       status: 'success',
       message: 'Song berhasil ditambahkan ke playlist',
@@ -28,9 +36,6 @@ class PlaylistSongsHandler {
     });
     response.code(201);
 
-    await this._playlistActivitiesService.addPlaylistActivity({
-      playlistId, songId, userId: credentialId, action: PlaylistActivityAction.ADD,
-    });
     return response;
   }
 
@@ -40,12 +45,12 @@ class PlaylistSongsHandler {
     const { id: playlistId } = request.params;
     const { songId } = request.payload;
 
-    await this._playlistsService.verifyPlaylistOwner(playlistId, credentialId);
-    await this._playlistSongsService.deletePlaylistSongByPlaylistIdAndSongId(playlistId, songId);
-
-    await this._playlistActivitiesService.addPlaylistActivity({
-      playlistId, songId, userId: credentialId, action: PlaylistActivityAction.DELETE,
-    });
+    await this._playlistsService.verifyPlaylistAccess(playlistId, credentialId);
+    await this._playlistSongsService.deletePlaylistSongByPlaylistIdAndSongId(
+      playlistId,
+      songId,
+      credentialId,
+    );
 
     return {
       status: 'success',

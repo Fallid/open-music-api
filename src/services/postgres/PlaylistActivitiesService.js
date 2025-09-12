@@ -34,7 +34,8 @@ class PlaylistActivitiesService {
       INNER JOIN users u on p.owner = u.id
       INNER JOIN playlist_song_activities psa on psa.playlist_id = p.id
       LEFT JOIN songs s ON s.id = psa.song_id
-      WHERE p.owner = $1 AND p.id = $2`,
+      LEFT JOIN collaborations cb ON cb.playlist_id = p.id
+      WHERE (p.owner = $1 OR cb.user_id = $1) OR p.id = $2`,
       values: [owner, playlistId],
     };
 

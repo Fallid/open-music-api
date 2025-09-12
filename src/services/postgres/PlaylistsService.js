@@ -9,8 +9,9 @@ const NotFoundError = require('../../exceptions/NotFoundError');
 const AuthorizationError = require('../../exceptions/AuthorizationError');
 
 class PlaylistsService {
-  constructor() {
+  constructor(collaborationsService) {
     this._pool = new Pool();
+    this._collaborationsService = collaborationsService;
   }
 
   async addPlaylist({ name, owner }) {
@@ -34,16 +35,13 @@ class PlaylistsService {
 
   async getPlaylists(owner) {
     const query = {
-      text: `SELECT pl.id, pl.name, usr.username FROM playlists AS pl
-        INNER JOIN users AS usr ON usr.id = pl.owner
-        WHERE pl.owner = $1`,
+      text: `SELECT pl.id, pl.name, usr.username FROM playlists pl
+      LEFT JOIN collaborations cb ON cb.playlist_id = pl.id 
+      LEFT JOIN users usr ON usr.id = pl.owner
+      WHERE pl.owner = $1 OR cb.user_id = $1`,
       values: [owner],
     };
     const result = await this._pool.query(query);
-
-    if (!result.rows.length) {
-      throw new NotFoundError('Playlist tidak ditemukan');
-    }
 
     return result.rows.map(mapDBPlaylistToModel);
   }
@@ -80,13 +78,29 @@ class PlaylistsService {
     }
   }
 
+  async verifyPlaylistAccess(playlistId, userId) {
+    try {
+      await this.verifyPlaylistOwner(playlistId, userId);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+      try {
+        await this._collaborationsService.verifyCollaborator(playlistId, userId);
+      } catch {
+        throw error;
+      }
+    }
+  }
+
   async getPlaylistSongByPlaylistId({ owner, playlistId }) {
     const query = {
       text: `SELECT p.id, p.name, u.username, s.id AS song_id, s.title AS song_title, s.performer AS song_performer FROM playlists p
       INNER JOIN users u ON p.owner = u.id
       LEFT JOIN playlist_songs ps ON ps.playlist_id = p.id
       LEFT JOIN songs s ON s.id = ps.song_id
-      WHERE p.owner = $1 AND p.id = $2`,
+      LEFT JOIN collaborations cb ON cb.playlist_id = p.id
+      WHERE (p.owner = $1 OR cb.user_id = $1) AND p.id = $2`,
       values: [owner, playlistId],
     };
     const result = await this._pool.query(query);
