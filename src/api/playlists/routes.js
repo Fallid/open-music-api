@@ -7,6 +7,11 @@ const routes = (handler) => [
     handler: handler.postPlaylistHandler,
     options: {
       auth: 'openmusic_jwt',
+      plugins: {
+        'hapi-swagger': {
+          security: [{ jwt: [] }],
+        },
+      },
       tags: ['api', 'playlists'],
       description: 'Endpoint untuk membuat playlist baru.',
       notes: 'Parameter: name (string, max 255, required)',
@@ -21,6 +26,11 @@ const routes = (handler) => [
     handler: handler.getPlaylistsHandler,
     options: {
       auth: 'openmusic_jwt',
+      plugins: {
+        'hapi-swagger': {
+          security: [{ jwt: [] }],
+        },
+      },
       tags: ['api', 'playlists'],
       description: 'Endpoint untuk mendapatkan daftar playlist milik user.',
       notes: 'Tidak ada parameter khusus.',
@@ -32,6 +42,11 @@ const routes = (handler) => [
     handler: handler.getPlaylistSongsByPlaylistIdHandler,
     options: {
       auth: 'openmusic_jwt',
+      plugins: {
+        'hapi-swagger': {
+          security: [{ jwt: [] }],
+        },
+      },
       tags: ['api', 'playlists'],
       description: 'Endpoint untuk mendapatkan daftar lagu dalam playlist tertentu.',
       notes: 'Parameter: id (string, path)',
@@ -46,6 +61,11 @@ const routes = (handler) => [
     handler: handler.deletePlaylistByIdHandler,
     options: {
       auth: 'openmusic_jwt',
+      plugins: {
+        'hapi-swagger': {
+          security: [{ jwt: [] }],
+        },
+      },
       tags: ['api', 'playlists'],
       description: 'Endpoint untuk menghapus playlist berdasarkan id.',
       notes: 'Parameter: id (string, path)',

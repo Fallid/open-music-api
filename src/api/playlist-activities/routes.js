@@ -7,6 +7,11 @@ const routes = (handler) => [
     handler: handler.getPlaylistActivitiesByPlaylistId,
     options: {
       auth: 'openmusic_jwt',
+      plugins: {
+        'hapi-swagger': {
+          security: [{ jwt: [] }],
+        },
+      },
       tags: ['api', 'playlist-activities'],
       description: 'Endpoint untuk mendapatkan aktivitas playlist (add/delete song).',
       notes: 'Parameter: id (string, path)',

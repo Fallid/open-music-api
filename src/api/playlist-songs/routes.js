@@ -8,6 +8,11 @@ const routes = (handler) => [
     handler: handler.postPlaylistSongsHandler,
     options: {
       auth: 'openmusic_jwt',
+      plugins: {
+        'hapi-swagger': {
+          security: [{ jwt: [] }],
+        },
+      },
       tags: ['api', 'playlist-songs'],
       description: 'Endpoint untuk menambahkan lagu ke playlist.',
       notes: 'Parameter: id (string, path), songId (string, max 50, required)',
@@ -23,6 +28,11 @@ const routes = (handler) => [
     handler: handler.deletePlaylistSongsHandler,
     options: {
       auth: 'openmusic_jwt',
+      plugins: {
+        'hapi-swagger': {
+          security: [{ jwt: [] }],
+        },
+      },
       tags: ['api', 'playlist-songs'],
       description: 'Endpoint untuk menghapus lagu dari playlist.',
       notes: 'Parameter: id (string, path), songId (string, max 50, required)',
