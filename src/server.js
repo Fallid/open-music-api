@@ -89,6 +89,15 @@ const init = async () => {
         documentationPage: true,
         definitionPrefix: 'useLabel',
         reuseDefinitions: true,
+        // Tambah definisi keamanan JWT untuk Swagger UI
+        securityDefinitions: {
+          jwt: {
+            type: 'apiKey',
+            name: 'Authorization',
+            in: 'header',
+            description: 'Masukkan token dengan format: Bearer <token>',
+          },
+        },
       },
     },
   ]);
