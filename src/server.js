@@ -3,6 +3,8 @@ const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
 // error handler
 const ClientError = require('./exceptions/ClientError');
+// object config
+const config = require('./utils/config');
 // albums plugin
 const albums = require('./api/albums');
 const AlbumsService = require('./services/postgres/AlbumsService');
@@ -35,6 +37,9 @@ const PlaylistActivitiesService = require('./services/postgres/PlaylistActivitie
 const collaborations = require('./api/collaborations');
 const CollaborationsService = require('./services/postgres/CollaborationsService');
 const CollaborationsValidator = require('./validators/collaborations');
+// album liks plugin
+const albumLikes = require('./api/album-likes');
+const AlbumLikesService = require('./services/postgres/AlbumLikesService');
 
 const init = async () => {
   const albumsService = new AlbumsService();
@@ -45,10 +50,11 @@ const init = async () => {
   const playlistsService = new PlaylistsService(collaborationsService);
   const playlistActivitiesService = new PlaylistActivitiesService();
   const playlistSongsService = new PlaylistSongsService(playlistActivitiesService);
+  const albumLikesService = new AlbumLikesService();
 
   const server = Hapi.server({
-    port: process.env.PORT,
-    host: process.env.HOST,
+    port: config.app.port,
+    host: config.app.host,
     routes: {
       cors: {
         origin: ['*'],
@@ -141,6 +147,12 @@ const init = async () => {
         collaborationsService,
         playlistsService,
         validator: CollaborationsValidator,
+      },
+    },
+    {
+      plugin: albumLikes,
+      options: {
+        service: albumLikesService,
       },
     },
   ]);
