@@ -25,5 +25,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'consistent-return': 'warn',
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    // Allow both LF and CRLF line endings
+    'linebreak-style': ['off'],
   },
 };
