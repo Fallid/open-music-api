@@ -1,11 +1,12 @@
 /* eslint-disable camelcase */
 // Map Album
 const mapDBAlbumsToModel = ({
-  id, name, year, songs,
+  id, name, year, cover, songs,
 }) => ({
   id,
   name,
   year,
+  coverUrl: cover,
   songs,
 });
 
