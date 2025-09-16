@@ -10,12 +10,12 @@ class UploadsHandler {
   }
 
   async postUploadImageHandler(request, h) {
-    const { data } = request.payload;
+    const { cover } = request.payload;
     const { id: albumId } = request.params;
     await this._albumsService.verifyExistingAlbum(albumId);
-    await this._validator.validateImageHeaders(data.hapi.headers);
+    await this._validator.validateImageHeaders(cover.hapi.headers);
 
-    const fileLocation = await this._storageService.writeFile(data, data.hapi);
+    const fileLocation = await this._storageService.writeFile(cover, cover.hapi);
     await this._albumsService.putCoverAlbumById(albumId, fileLocation);
     const response = h.response({
       status: 'success',
