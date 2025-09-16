@@ -22,18 +22,24 @@ class AlbumLikesHandler {
     return response;
   }
 
-  async getAlbumLikeByAlbumId(request) {
+  async getAlbumLikeByAlbumId(request, h) {
     const { id: albumId } = request.params;
 
     await this._albumsService.verifyExistingAlbum(albumId);
 
-    const likes = await this._albumLikesService.getAlbumLikes(albumId);
-    return {
+    const { isCache, result } = await this._albumLikesService.getAlbumLikes(albumId);
+
+    const response = h.response({
       status: 'success',
-      data: {
-        likes,
-      },
-    };
+      data: { likes: parseInt(result.count, 10) },
+    });
+    console.log(isCache);
+    if (isCache) {
+      response.header('X-Data-Source', 'cache');
+    } else {
+      response.header('X-Data-Source', 'not-cache');
+    }
+    return response;
   }
 
   async deleteAlbumLikeByAlbumId(request) {
