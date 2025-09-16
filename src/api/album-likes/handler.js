@@ -1,8 +1,9 @@
 const autoBind = require('auto-bind');
 
 class AlbumLikesHandler {
-  constructor(service) {
-    this._service = service;
+  constructor(albumLikesService, albumsService) {
+    this._albumLikesService = albumLikesService;
+    this._albumsService = albumsService;
     autoBind(this);
   }
 
@@ -10,7 +11,9 @@ class AlbumLikesHandler {
     const { id: credentialId } = request.auth.credentials;
     const { id: albumId } = request.params;
 
-    await this._service.addAlbumLike(credentialId, albumId);
+    await this._albumsService.verifyExistingAlbum(albumId);
+
+    await this._albumLikesService.addAlbumLike(credentialId, albumId);
     const response = h.response({
       status: 'success',
       message: 'Album disukai',
@@ -22,7 +25,9 @@ class AlbumLikesHandler {
   async getAlbumLikeByAlbumId(request) {
     const { id: albumId } = request.params;
 
-    const likes = await this._service.getAlbumLikes(albumId);
+    await this._albumsService.verifyExistingAlbum(albumId);
+
+    const likes = await this._albumLikesService.getAlbumLikes(albumId);
     return {
       status: 'success',
       data: {
@@ -33,9 +38,11 @@ class AlbumLikesHandler {
 
   async deleteAlbumLikeByAlbumId(request) {
     const { id: credentialId } = request.auth.credentials;
-    const { id: playlistId } = request.params;
+    const { id: albumId } = request.params;
 
-    await this._service.deleteAlbumLike(credentialId, playlistId);
+    await this._albumsService.verifyExistingAlbum(albumId);
+
+    await this._albumLikesService.deleteAlbumLike(credentialId, albumId);
 
     return {
       status: 'success',

@@ -1,7 +1,6 @@
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 const InvariantError = require('../../exceptions/InvariantError');
-const NotFoundError = require('../../exceptions/NotFoundError');
 
 class AlbumLikesService {
   constructor() {
@@ -19,19 +18,7 @@ class AlbumLikesService {
     }
   }
 
-  async verifyExistingAlbum(albumId) {
-    const query = {
-      text: 'SELECT id FROM albums WHERE id = $1',
-      values: [albumId],
-    };
-    const result = await this._pool.query(query);
-    if (!result.rows.length) {
-      throw new NotFoundError('Album tidak ditemukan');
-    }
-  }
-
   async addAlbumLike(userId, albumId) {
-    await this.verifyExistingAlbum(albumId);
     await this.verifyAlbumLike(userId, albumId);
     const id = `album_like-${nanoid(16)}`;
     const query = {
@@ -49,8 +36,6 @@ class AlbumLikesService {
   }
 
   async getAlbumLikes(albumId) {
-    await this.verifyExistingAlbum(albumId);
-
     const query = {
       text: 'SELECT * FROM user_album_likes WHERE album_id = $1',
       values: [albumId],
@@ -62,8 +47,6 @@ class AlbumLikesService {
   }
 
   async deleteAlbumLike(userId, albumId) {
-    await this.verifyExistingAlbum(albumId);
-
     const query = {
       text: 'DELETE FROM user_album_likes WHERE user_id = $1 AND album_id = $2 RETURNING id',
       values: [userId, albumId],
