@@ -46,6 +46,10 @@ const StorageService = require('./services/S3/StorageService');
 const UploadsValidator = require('./validators/uploads');
 // cache
 const CacheService = require('./services/redis/CacheService');
+// exports plugin
+const _exports = require('./api/exports');
+const ProducerService = require('./services/rabbitmq/ProducerService');
+const ExportsValidator = require('./validators/exports');
 
 const init = async () => {
   const cacheService = new CacheService();
@@ -170,6 +174,14 @@ const init = async () => {
         storageService,
         albumsService,
         validator: UploadsValidator,
+      },
+    },
+    {
+      plugin: _exports,
+      options: {
+        service: ProducerService,
+        playlistsService,
+        validator: ExportsValidator,
       },
     },
   ]);
