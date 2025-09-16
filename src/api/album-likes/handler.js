@@ -33,7 +33,7 @@ class AlbumLikesHandler {
       status: 'success',
       data: { likes: parseInt(result.count, 10) },
     });
-    console.log(isCache);
+
     if (isCache) {
       response.header('X-Data-Source', 'cache');
     } else {
