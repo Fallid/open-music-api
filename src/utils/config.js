@@ -6,6 +6,9 @@ const config = {
   s3: {
     bucketName: process.env.AWS_BUCKET_NAME,
   },
+  redis: {
+    host: process.env.REDIS_SERVER,
+  },
 };
 
 module.exports = config;
