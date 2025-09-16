@@ -4,6 +4,7 @@ const InvariantError = require('../../exceptions/InvariantError');
 const {
   mapDBPlaylistToModel,
   mapDBPlaylistSongsToModel,
+  mapDBSongsToModel,
 } = require('../../utils');
 const NotFoundError = require('../../exceptions/NotFoundError');
 const AuthorizationError = require('../../exceptions/AuthorizationError');
@@ -93,6 +94,18 @@ class PlaylistsService {
     }
   }
 
+  async verifyPlaylistExist(playlistId) {
+    const query = {
+      text: 'SELECT id FROM playlists WHERE id = $1',
+      values: [playlistId],
+    };
+
+    const result = await this._pool.query(query);
+    if (!result.rows.length) {
+      throw new NotFoundError('Perminta Anda gagal. Playlist tidak ditemukan');
+    }
+  }
+
   async getPlaylistSongByPlaylistId({ owner, playlistId }) {
     const query = {
       text: `SELECT p.id, p.name, u.username, s.id AS song_id, s.title AS song_title, s.performer AS song_performer FROM playlists p
@@ -109,7 +122,20 @@ class PlaylistsService {
       throw new NotFoundError('Playlist tidak ditemukan');
     }
 
-    return mapDBPlaylistSongsToModel(result.rows);
+    // Extract songs data if available
+    const songs = result.rows[0].song_id
+      ? result.rows.map(mapDBSongsToModel)
+      : [];
+
+    // Construct playlist object
+    const playlist = {
+      id: result.rows[0].id,
+      name: result.rows[0].name,
+      username: result.rows[0].username,
+      songs,
+    };
+
+    return mapDBPlaylistSongsToModel(playlist);
   }
 }
 
