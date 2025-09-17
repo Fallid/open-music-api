@@ -7,7 +7,7 @@ class AlbumLikesHandler {
     autoBind(this);
   }
 
-  async postAlbumLike(request, h) {
+  async postAlbumLikeHandler(request, h) {
     const { id: credentialId } = request.auth.credentials;
     const { id: albumId } = request.params;
 
@@ -22,7 +22,7 @@ class AlbumLikesHandler {
     return response;
   }
 
-  async getAlbumLikeByAlbumId(request, h) {
+  async getAlbumLikeByAlbumIdHandler(request, h) {
     const { id: albumId } = request.params;
 
     await this._albumsService.verifyExistingAlbum(albumId);
@@ -42,7 +42,7 @@ class AlbumLikesHandler {
     return response;
   }
 
-  async deleteAlbumLikeByAlbumId(request) {
+  async deleteAlbumLikeByAlbumIdHandler(request) {
     const { id: credentialId } = request.auth.credentials;
     const { id: albumId } = request.params;
 
