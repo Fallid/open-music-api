@@ -53,14 +53,14 @@ const ExportsValidator = require('./validators/exports');
 
 const init = async () => {
   const cacheService = new CacheService();
-  const albumsService = new AlbumsService();
-  const songsService = new SongsService();
+  const albumsService = new AlbumsService(cacheService);
+  const songsService = new SongsService(cacheService);
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
-  const collaborationsService = new CollaborationsService();
-  const playlistsService = new PlaylistsService(collaborationsService);
+  const collaborationsService = new CollaborationsService(cacheService);
+  const playlistsService = new PlaylistsService(collaborationsService, cacheService);
   const playlistActivitiesService = new PlaylistActivitiesService();
-  const playlistSongsService = new PlaylistSongsService(playlistActivitiesService);
+  const playlistSongsService = new PlaylistSongsService(playlistActivitiesService, cacheService);
   const albumLikesService = new AlbumLikesService(cacheService);
   const storageService = new StorageService();
 
@@ -142,7 +142,6 @@ const init = async () => {
       options: {
         playlistSongsService,
         playlistsService,
-        playlistActivitiesService,
         validator: PlaylistSongsValidator,
       },
     },

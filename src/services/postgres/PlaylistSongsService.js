@@ -2,12 +2,17 @@ const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
-const { PlaylistActivityAction } = require('../../utils/enum');
+
+const PlaylistActivityAction = {
+  ADD: 'add',
+  DELETE: 'delete',
+};
 
 class PlaylistSongsService {
-  constructor(playlistActivitesService) {
+  constructor(playlistActivitesService, cacheService) {
     this._pool = new Pool();
     this._playlistActivitiesService = playlistActivitesService;
+    this._cacheService = cacheService;
   }
 
   async verifyNewSongInPlaylist(songId) {
@@ -55,6 +60,8 @@ class PlaylistSongsService {
       throw new InvariantError('Song gagal ditambahkan ke dalam playlist');
     }
 
+    await this._cacheService.delete(`playlist:${id}`);
+
     return result.rows[0];
   }
 
@@ -76,6 +83,7 @@ class PlaylistSongsService {
     if (!result.rows.length) {
       throw new InvariantError('Playlist song gagal dihapus');
     }
+    await this._cacheService.delete(`playlist:${playlistId}`);
     return result;
   }
 }

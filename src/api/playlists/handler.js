@@ -28,31 +28,49 @@ class PlaylistsHandler {
     return response;
   }
 
-  async getPlaylistsHandler(request) {
+  async getPlaylistsHandler(request, h) {
     const { id: credentialId } = request.auth.credentials;
-    const playlists = await this._service.getPlaylists(credentialId);
-    return {
+    const { isCache, result } = await this._service.getPlaylists(credentialId);
+
+    const response = h.response({
       status: 'success',
       data: {
-        playlists,
+        playlists: result,
       },
-    };
+    });
+
+    if (isCache) {
+      response.header('X-Data-Source', 'cache');
+    } else {
+      response.header('X-Data-Source', 'not-cache');
+    }
+
+    return response;
   }
 
-  async getPlaylistSongsByPlaylistIdHandler(request) {
+  async getPlaylistSongsByPlaylistIdHandler(request, h) {
     const { id: credentialId } = request.auth.credentials;
     const { id: playlistId } = request.params;
     await this._service.verifyPlaylistAccess(playlistId, credentialId);
-    const playlist = await this._service.getPlaylistSongByPlaylistId({
+    const { isCache, result } = await this._service.getPlaylistSongByPlaylistId({
       owner: credentialId,
       playlistId,
     });
-    return {
+
+    const response = h.response({
       status: 'success',
       data: {
-        playlist,
+        playlist: result,
       },
-    };
+    });
+
+    if (isCache) {
+      response.header('X-Data-Source', 'cache');
+    } else {
+      response.header('X-Data-Source', 'not-cache');
+    }
+
+    return response;
   }
 
   async deletePlaylistByIdHandler(request) {

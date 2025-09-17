@@ -23,15 +23,24 @@ class AlbumsHandler {
     return response;
   }
 
-  async getAlbumByIdHandler(request, _h) {
+  async getAlbumByIdHandler(request, h) {
     const { id } = request.params;
-    const album = await this._service.getAlbumById(id);
-    return {
+    const { isCache, result } = await this._service.getAlbumById(id);
+
+    const response = h.response({
       status: 'success',
       data: {
-        album,
+        album: result,
       },
-    };
+    });
+
+    if (isCache) {
+      response.header('X-Data-Source', 'cache');
+    } else {
+      response.header('X-Data-Source', 'not-cache');
+    }
+
+    return response;
   }
 
   async putAlbumByIdHandler(request, _h) {
