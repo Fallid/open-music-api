@@ -4,12 +4,10 @@ class PlaylistSongsHandler {
   constructor(
     playlistSongsService,
     playlistsService,
-    playlistActivitiesService,
     validator,
   ) {
     this._playlistSongsService = playlistSongsService;
     this._playlistsService = playlistsService;
-    this._playlistActivitiesService = playlistActivitiesService;
     this._validator = validator;
 
     autoBind(this);

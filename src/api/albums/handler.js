@@ -10,8 +10,7 @@ class AlbumsHandler {
 
   async postAlbumHandler(request, h) {
     this._validator.validateAlbumPayload(request.payload);
-    const { name = 'untitled', year } = request.payload;
-    const albumId = await this._service.addAlbum({ name, year });
+    const albumId = await this._service.addAlbum(request.payload);
 
     const response = h.response({
       status: 'success',
@@ -24,15 +23,24 @@ class AlbumsHandler {
     return response;
   }
 
-  async getAlbumByIdHandler(request, _h) {
+  async getAlbumByIdHandler(request, h) {
     const { id } = request.params;
-    const album = await this._service.getAlbumById(id);
-    return {
+    const { isCache, result } = await this._service.getAlbumById(id);
+
+    const response = h.response({
       status: 'success',
       data: {
-        album,
+        album: result,
       },
-    };
+    });
+
+    if (isCache) {
+      response.header('X-Data-Source', 'cache');
+    } else {
+      response.header('X-Data-Source', 'not-cache');
+    }
+
+    return response;
   }
 
   async putAlbumByIdHandler(request, _h) {

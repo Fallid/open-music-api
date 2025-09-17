@@ -22,27 +22,45 @@ class SongsHandler {
     return response;
   }
 
-  async getSongsHandler(request, _h) {
+  async getSongsHandler(request, h) {
     const { title = '', performer = '' } = request.query;
     await this._validator.validateSongSearch({ title, performer });
-    const songs = await this._service.getSongs({ title, performer });
-    return {
+    const { isCache, result } = await this._service.getSongs(title, performer);
+
+    const response = h.response({
       status: 'success',
       data: {
-        songs,
+        songs: result,
       },
-    };
+    });
+
+    if (isCache) {
+      response.header('X-Data-Source', 'cache');
+    } else {
+      response.header('X-Data-Source', 'not-cache');
+    }
+
+    return response;
   }
 
-  async getSongByIdHandler(request, _h) {
+  async getSongByIdHandler(request, h) {
     const { id } = request.params;
-    const song = await this._service.getSongById(id);
-    return {
+    const { isCache, result } = await this._service.getSongById(id);
+
+    const response = h.response({
       status: 'success',
       data: {
-        song,
+        song: result,
       },
-    };
+    });
+
+    if (isCache) {
+      response.header('X-Data-Source', 'cache');
+    } else {
+      response.header('X-Data-Source', 'not-cache');
+    }
+
+    return response;
   }
 
   async putSongByIdHandler(request, _h) {
