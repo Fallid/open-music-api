@@ -1,5 +1,5 @@
-const SwaggerAuthenticationResponse = require('../../SwaggerAuthenticationResponse');
-const SwaggerNotFoundResponse = require('../../SwaggerNotFoundResponse');
+const SwaggerAuthenticationResponse = require('../../execptions/SwaggerAuthenticationResponse');
+const SwaggerNotFoundResponse = require('../../execptions/SwaggerNotFoundResponse');
 
 const AlbumLikesSwaggerDocs = {
   tags: ['api', 'Album Likes'],
@@ -20,7 +20,7 @@ const AlbumLikesSwaggerDocs = {
           },
         },
       },
-      401: SwaggerAuthenticationResponse[401],
+      401: SwaggerAuthenticationResponse(),
       404: SwaggerNotFoundResponse('Album tidak ditemukan'),
     },
   },
@@ -60,7 +60,7 @@ const AlbumLikesSwaggerDocs = {
           },
         },
       },
-      401: SwaggerAuthenticationResponse[401],
+      401: SwaggerAuthenticationResponse(),
       404: SwaggerNotFoundResponse('Album tidak ditemukan'),
     },
   },

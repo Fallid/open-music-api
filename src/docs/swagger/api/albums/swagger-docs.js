@@ -1,5 +1,5 @@
-const SwaggerInvariantResponse = require('../../SwaggerInvariantResponse');
-const SwaggerNotFoundResponse = require('../../SwaggerNotFoundResponse');
+const SwaggerInvariantResponse = require('../../execptions/SwaggerInvariantResponse');
+const SwaggerNotFoundResponse = require('../../execptions/SwaggerNotFoundResponse');
 
 const AlbumsSwaggerDocs = {
   tags: ['api', 'Albums'],

@@ -1,47 +1,70 @@
-const Joi = require('joi');
 const {
   PostAuthenticationPayloadSchema,
   PutAuthenticationPayloadSchema,
   DeleteAuthenticationPayloadSchema,
 } = require('../../validators/authentications/schema');
+const rateLimitMiddleware = require('../../utils/rateLimiter');
+const failAction = require('../../utils/failAction');
+const SwaggerAuthenticationDocs = require('../../docs/swagger/api/authentications/swagger-docs');
 
 const routes = (handler) => [
   {
     method: 'POST',
     path: '/authentications',
-    handler: handler.postAuthenticationHandler,
     options: {
-      tags: ['api', 'authentications'],
-      description: 'Endpoint untuk login dan mendapatkan access token serta refresh token.',
-      notes: 'Parameter: username (string, max 50, required), password (string, max 255, required)',
+      pre: [{ method: rateLimitMiddleware }],
+      handler: handler.postAuthenticationHandler,
+      tags: SwaggerAuthenticationDocs.tags,
+      description: SwaggerAuthenticationDocs.post_authentication.description,
+      notes: SwaggerAuthenticationDocs.post_authentication.notes,
       validate: {
         payload: PostAuthenticationPayloadSchema,
+        failAction,
+      },
+      plugins: {
+        'hapi-swagger': {
+          responses: SwaggerAuthenticationDocs.post_authentication.responses,
+        },
       },
     },
   },
   {
     method: 'PUT',
     path: '/authentications',
-    handler: handler.putAuthenticationHandler,
     options: {
-      tags: ['api', 'authentications'],
-      description: 'Endpoint untuk memperbarui access token menggunakan refresh token.',
-      notes: 'Parameter: refreshToken (string, required)',
+      pre: [{ method: rateLimitMiddleware }],
+      handler: handler.putAuthenticationHandler,
+      tags: SwaggerAuthenticationDocs.tags,
+      description: SwaggerAuthenticationDocs.put_authentication.description,
+      notes: SwaggerAuthenticationDocs.put_authentication.notes,
       validate: {
         payload: PutAuthenticationPayloadSchema,
+        failAction,
+      },
+      plugins: {
+        'hapi-swagger': {
+          responses: SwaggerAuthenticationDocs.put_authentication.reponses,
+        },
       },
     },
   },
   {
     method: 'DELETE',
     path: '/authentications',
-    handler: handler.deleteAuthenticationHandler,
     options: {
-      tags: ['api', 'authentications'],
-      description: 'Endpoint untuk logout dan menghapus refresh token.',
-      notes: 'Parameter: refreshToken (string, required)',
+      pre: [{ method: rateLimitMiddleware }],
+      handler: handler.deleteAuthenticationHandler,
+      tags: SwaggerAuthenticationDocs.tags,
+      description: SwaggerAuthenticationDocs.delete_authentication.description,
+      notes: SwaggerAuthenticationDocs.delete_authentication.notes,
       validate: {
         payload: DeleteAuthenticationPayloadSchema,
+        failAction,
+      },
+      plugins: {
+        'hapi-swagger': {
+          responses: SwaggerAuthenticationDocs.delete_authentication.responses,
+        },
       },
     },
   },
