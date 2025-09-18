@@ -21,7 +21,7 @@ const AlbumLikesSwaggerDocs = {
         },
       },
       401: SwaggerAuthenticationResponse[401],
-      404: SwaggerNotFoundResponse('Error: Not Found', 'Album tidak ditemukan'),
+      404: SwaggerNotFoundResponse('Album tidak ditemukan'),
     },
   },
   get_album_id_likes: {
@@ -43,7 +43,7 @@ const AlbumLikesSwaggerDocs = {
           },
         },
       },
-      404: SwaggerNotFoundResponse('Error: Not Found', 'Album tidak ditemukan'),
+      404: SwaggerNotFoundResponse('Album tidak ditemukan'),
     },
   },
   delete_album_id_likes: {
@@ -51,7 +51,7 @@ const AlbumLikesSwaggerDocs = {
     notes: ['Login/Credentials required', 'Paramter: id (string, ID album, max 50, required'],
     responses: {
       200: {
-        description: 'Album berhasil disukai',
+        description: 'Dislike album',
         schema: {
           type: 'object',
           properties: {
@@ -61,7 +61,7 @@ const AlbumLikesSwaggerDocs = {
         },
       },
       401: SwaggerAuthenticationResponse[401],
-      404: SwaggerNotFoundResponse('Error: Not Found', 'Album tidak ditemukan'),
+      404: SwaggerNotFoundResponse('Album tidak ditemukan'),
     },
   },
 
