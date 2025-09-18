@@ -14,7 +14,7 @@ const routes = (handler) => [
           responses: AlbumLikesSwaggerDocs.post_album_id_likes.responses,
         },
       },
-      tags: AlbumLikesSwaggerDocs.post_album_id_likes.tags,
+      tags: AlbumLikesSwaggerDocs.tags,
       description: AlbumLikesSwaggerDocs.post_album_id_likes.description,
       notes: AlbumLikesSwaggerDocs.post_album_id_likes.notes,
       validate: {
@@ -32,7 +32,7 @@ const routes = (handler) => [
           responses: AlbumLikesSwaggerDocs.get_album_id_likes.responses,
         },
       },
-      tags: AlbumLikesSwaggerDocs.get_album_id_likes.tags,
+      tags: AlbumLikesSwaggerDocs.tags,
       description: AlbumLikesSwaggerDocs.get_album_id_likes.description,
       notes: AlbumLikesSwaggerDocs.get_album_id_likes.notes,
       validate: {
@@ -52,7 +52,7 @@ const routes = (handler) => [
           responses: AlbumLikesSwaggerDocs.delete_album_id_likes.responses,
         },
       },
-      tags: AlbumLikesSwaggerDocs.delete_album_id_likes.tags,
+      tags: AlbumLikesSwaggerDocs.tags,
       description: AlbumLikesSwaggerDocs.delete_album_id_likes.description,
       notes: AlbumLikesSwaggerDocs.delete_album_id_likes.notes,
       validate: {

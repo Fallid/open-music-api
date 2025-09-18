@@ -2,8 +2,8 @@ const SwaggerAuthenticationResponse = require('../../SwaggerAuthenticationRespon
 const SwaggerNotFoundResponse = require('../../SwaggerNotFoundResponse');
 
 const AlbumLikesSwaggerDocs = {
+  tags: ['api', 'Album Likes'],
   post_album_id_likes: {
-    tags: ['api', 'Album Likes'],
     description: 'Endpoint untuk menyukai album',
     notes: [
       'Login/Credentials required',
@@ -25,7 +25,6 @@ const AlbumLikesSwaggerDocs = {
     },
   },
   get_album_id_likes: {
-    tags: ['api', 'Album Likes'],
     description: 'Endpoint untuk melihat jumlah album disukai',
     notes: 'Parameter: id (string, ID album, max 50, required)',
     responses: {
@@ -48,7 +47,6 @@ const AlbumLikesSwaggerDocs = {
     },
   },
   delete_album_id_likes: {
-    tags: ['api', 'Album Likes'],
     description: 'Enpoint untuk dislike album',
     notes: ['Login/Credentials required', 'Paramter: id (string, ID album, max 50, required'],
     responses: {
