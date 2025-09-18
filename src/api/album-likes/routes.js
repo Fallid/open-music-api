@@ -1,20 +1,22 @@
 const { AlbumLikesParamsSchema } = require('../../validators/album-likes/schema');
+const AlbumLikesSwaggerDocs = require('../../docs/swagger/api/album-likes/swagger-docs');
 
 const routes = (handler) => [
   {
     method: 'POST',
     path: '/albums/{id}/likes',
-    handler: handler.postAlbumLikeHandler,
     options: {
+      handler: handler.postAlbumLikeHandler,
       auth: 'openmusic_jwt',
       plugins: {
         'hapi-swagger': {
-          security: [{ jwt: [] }],
+          security: AlbumLikesSwaggerDocs.security,
+          responses: AlbumLikesSwaggerDocs.post_album_id_likes.responses,
         },
       },
-      tags: ['api', 'Album Likes'],
-      description: 'Endpoint untuk menyukai album',
-      notes: ['Login/Credentials required', 'Parameter: id (string, ID album, max 50, required)'],
+      tags: AlbumLikesSwaggerDocs.post_album_id_likes.tags,
+      description: AlbumLikesSwaggerDocs.post_album_id_likes.description,
+      notes: AlbumLikesSwaggerDocs.post_album_id_likes.notes,
       validate: {
         params: AlbumLikesParamsSchema,
       },
@@ -23,11 +25,16 @@ const routes = (handler) => [
   {
     method: 'GET',
     path: '/albums/{id}/likes',
-    handler: handler.getAlbumLikeByAlbumIdHandler,
     options: {
-      tags: ['api', 'Album Likes'],
-      description: 'Endpoint untuk melihat jumlah album disukai',
-      notes: 'Parameter: id (string, ID album, max 50, required)',
+      handler: handler.getAlbumLikeByAlbumIdHandler,
+      plugins: {
+        'hapi-swagger': {
+          responses: AlbumLikesSwaggerDocs.get_album_id_likes.responses,
+        },
+      },
+      tags: AlbumLikesSwaggerDocs.get_album_id_likes.tags,
+      description: AlbumLikesSwaggerDocs.get_album_id_likes.description,
+      notes: AlbumLikesSwaggerDocs.get_album_id_likes.notes,
       validate: {
         params: AlbumLikesParamsSchema,
       },
@@ -36,17 +43,18 @@ const routes = (handler) => [
   {
     method: 'DELETE',
     path: '/albums/{id}/likes',
-    handler: handler.deleteAlbumLikeByAlbumIdHandler,
     options: {
+      handler: handler.deleteAlbumLikeByAlbumIdHandler,
       auth: 'openmusic_jwt',
       plugins: {
         'hapi-swagger': {
-          security: [{ jwt: [] }],
+          security: AlbumLikesSwaggerDocs.security,
+          responses: AlbumLikesSwaggerDocs.delete_album_id_likes.responses,
         },
       },
-      tags: ['api', 'Album Likes'],
-      description: 'Enpoint untuk dislike album',
-      notes: ['Login/Credentials required', 'Paramter: id (string, ID album, max 50, required'],
+      tags: AlbumLikesSwaggerDocs.delete_album_id_likes.tags,
+      description: AlbumLikesSwaggerDocs.delete_album_id_likes.description,
+      notes: AlbumLikesSwaggerDocs.delete_album_id_likes.notes,
       validate: {
         params: AlbumLikesParamsSchema,
       },

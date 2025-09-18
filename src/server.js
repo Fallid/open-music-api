@@ -204,6 +204,7 @@ const init = async () => {
     const { response } = request;
     if (response instanceof ClientError) {
       const newResponse = h.response({
+        statusCode: response.statusCode,
         status: 'fail',
         message: response.message,
       });
