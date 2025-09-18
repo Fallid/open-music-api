@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 const PostPlaylistPayloadSchema = Joi.object({
   name: Joi.string().max(255).required(),
-}).label('PlaylistCreateRequest');
+}).label('Playlist Create Request');
 
 const PlaylistParamsSchema = Joi.object({
   id: Joi.string().required(),

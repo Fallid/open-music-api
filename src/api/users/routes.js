@@ -1,4 +1,3 @@
-const Joi = require('joi');
 const UsersPayloadSchema = require('../../validators/users/schema');
 
 const routes = (handler) => [

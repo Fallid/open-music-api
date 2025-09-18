@@ -5,10 +5,10 @@ const AlbumsPayloadSchema = Joi.object({
   year: Joi.number().integer().min(1900).max(new Date().getFullYear())
     .required(),
   cover: Joi.string().allow(null),
-}).label('AlbumRequest');
+}).label('Album Request');
 
 const AlbumParamsSchema = Joi.object({
   id: Joi.string().required(),
-}).label('AlbumParams');
+}).label('Album Params');
 
 module.exports = { AlbumsPayloadSchema, AlbumParamsSchema };

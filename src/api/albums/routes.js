@@ -6,7 +6,7 @@ const routes = (handler) => [
     path: '/albums',
     handler: handler.postAlbumHandler,
     options: {
-      tags: ['api', 'albums'],
+      tags: ['api', 'Albums'],
       description: 'Endpoint untuk menambah album baru.',
       notes: 'Parameter: name (string, max 50, required), year (integer, min 1900, max tahun sekarang, required)',
       validate: {
@@ -19,7 +19,7 @@ const routes = (handler) => [
     path: '/albums/{id}',
     handler: handler.getAlbumByIdHandler,
     options: {
-      tags: ['api', 'albums'],
+      tags: ['api', 'Albums'],
       description: 'Endpoint untuk mengambil detail album beserta daftar lagu.',
       notes: 'Parameter: id (string, path)',
       validate: {
@@ -32,7 +32,7 @@ const routes = (handler) => [
     path: '/albums/{id}',
     handler: handler.putAlbumByIdHandler,
     options: {
-      tags: ['api', 'albums'],
+      tags: ['api', 'Albums'],
       description: 'Endpoint untuk memperbarui data album.',
       notes: 'Parameter: id (string, path), name (string, max 50, required), year (integer, min 1900, max tahun sekarang, required)',
       validate: {
@@ -46,7 +46,7 @@ const routes = (handler) => [
     path: '/albums/{id}',
     handler: handler.deleteAlbumByIdHandler,
     options: {
-      tags: ['api', 'albums'],
+      tags: ['api', 'Albums'],
       description: 'Endpoint untuk menghapus album berdasarkan id.',
       notes: 'Parameter: id (string, path)',
       validate: {
