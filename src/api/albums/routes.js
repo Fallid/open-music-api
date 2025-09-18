@@ -1,16 +1,24 @@
+const AlbumsSwaggerDocs = require('../../docs/swagger/api/albums/swagger-docs');
+const failAction = require('../../utils/failAction');
 const { AlbumsPayloadSchema, AlbumParamsSchema } = require('../../validators/albums/schema');
 
 const routes = (handler) => [
   {
     method: 'POST',
     path: '/albums',
-    handler: handler.postAlbumHandler,
     options: {
-      tags: ['api', 'Albums'],
-      description: 'Endpoint untuk menambah album baru.',
-      notes: 'Parameter: name (string, max 50, required), year (integer, min 1900, max tahun sekarang, required)',
+      handler: handler.postAlbumHandler,
+      tags: AlbumsSwaggerDocs.tags,
+      description: AlbumsSwaggerDocs.post_album.description,
+      notes: AlbumsSwaggerDocs.post_album.notes,
       validate: {
         payload: AlbumsPayloadSchema,
+        failAction,
+      },
+      plugins: {
+        'hapi-swagger': {
+          responses: AlbumsSwaggerDocs.post_album.responses,
+        },
       },
     },
   },
@@ -19,11 +27,16 @@ const routes = (handler) => [
     path: '/albums/{id}',
     handler: handler.getAlbumByIdHandler,
     options: {
-      tags: ['api', 'Albums'],
-      description: 'Endpoint untuk mengambil detail album beserta daftar lagu.',
-      notes: 'Parameter: id (string, path)',
+      tags: AlbumsSwaggerDocs.tags,
+      description: AlbumsSwaggerDocs.get_album.description,
+      notes: AlbumsSwaggerDocs.get_album.notes,
       validate: {
         params: AlbumParamsSchema,
+      },
+      plugins: {
+        'hapi-swagger': {
+          responses: AlbumsSwaggerDocs.get_album.responses,
+        },
       },
     },
   },
@@ -32,12 +45,18 @@ const routes = (handler) => [
     path: '/albums/{id}',
     handler: handler.putAlbumByIdHandler,
     options: {
-      tags: ['api', 'Albums'],
-      description: 'Endpoint untuk memperbarui data album.',
-      notes: 'Parameter: id (string, path), name (string, max 50, required), year (integer, min 1900, max tahun sekarang, required)',
+      tags: AlbumsSwaggerDocs.tags,
+      description: AlbumsSwaggerDocs.put_album.description,
+      notes: AlbumsSwaggerDocs.put_album.notes,
       validate: {
         params: AlbumParamsSchema,
         payload: AlbumsPayloadSchema,
+        failAction,
+      },
+      plugins: {
+        'hapi-swagger': {
+          responses: AlbumsSwaggerDocs.put_album.responses,
+        },
       },
     },
   },
@@ -46,11 +65,16 @@ const routes = (handler) => [
     path: '/albums/{id}',
     handler: handler.deleteAlbumByIdHandler,
     options: {
-      tags: ['api', 'Albums'],
-      description: 'Endpoint untuk menghapus album berdasarkan id.',
-      notes: 'Parameter: id (string, path)',
+      tags: AlbumsSwaggerDocs.tags,
+      description: AlbumsSwaggerDocs.delete_album.description,
+      notes: AlbumsSwaggerDocs.delete_album.notes,
       validate: {
         params: AlbumParamsSchema,
+      },
+      plugins: {
+        'hapi-swagger': {
+          responses: AlbumsSwaggerDocs.delete_album.responses,
+        },
       },
     },
   },
