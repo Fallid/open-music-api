@@ -1,11 +1,13 @@
 const { AlbumLikesParamsSchema } = require('../../validators/album-likes/schema');
 const AlbumLikesSwaggerDocs = require('../../docs/swagger/api/album-likes/swagger-docs');
+const rateLimitMiddleware = require('../../utils/rateLimiter');
 
 const routes = (handler) => [
   {
     method: 'POST',
     path: '/albums/{id}/likes',
     options: {
+      pre: [{ method: rateLimitMiddleware }],
       handler: handler.postAlbumLikeHandler,
       auth: 'openmusic_jwt',
       plugins: {
@@ -26,6 +28,7 @@ const routes = (handler) => [
     method: 'GET',
     path: '/albums/{id}/likes',
     options: {
+      pre: [{ method: rateLimitMiddleware }],
       handler: handler.getAlbumLikeByAlbumIdHandler,
       plugins: {
         'hapi-swagger': {
@@ -44,6 +47,7 @@ const routes = (handler) => [
     method: 'DELETE',
     path: '/albums/{id}/likes',
     options: {
+      pre: [{ method: rateLimitMiddleware }],
       handler: handler.deleteAlbumLikeByAlbumIdHandler,
       auth: 'openmusic_jwt',
       plugins: {
