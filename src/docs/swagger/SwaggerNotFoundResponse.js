@@ -1,5 +1,5 @@
-const SwaggerNotFoundResponse = (desc, message) => ({
-  description: desc,
+const SwaggerNotFoundResponse = (message) => ({
+  description: 'Error: Not Found',
   schema: {
     type: 'object',
     properties: {
