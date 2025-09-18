@@ -1,5 +1,6 @@
 const AlbumsSwaggerDocs = require('../../docs/swagger/api/albums/swagger-docs');
 const failAction = require('../../utils/failAction');
+const rateLimitMiddleware = require('../../utils/rateLimiter');
 const { AlbumsPayloadSchema, AlbumParamsSchema } = require('../../validators/albums/schema');
 
 const routes = (handler) => [
@@ -7,6 +8,7 @@ const routes = (handler) => [
     method: 'POST',
     path: '/albums',
     options: {
+      pre: [{ method: rateLimitMiddleware }],
       handler: handler.postAlbumHandler,
       tags: AlbumsSwaggerDocs.tags,
       description: AlbumsSwaggerDocs.post_album.description,
@@ -25,8 +27,9 @@ const routes = (handler) => [
   {
     method: 'GET',
     path: '/albums/{id}',
-    handler: handler.getAlbumByIdHandler,
     options: {
+      pre: [{ method: rateLimitMiddleware }],
+      handler: handler.getAlbumByIdHandler,
       tags: AlbumsSwaggerDocs.tags,
       description: AlbumsSwaggerDocs.get_album.description,
       notes: AlbumsSwaggerDocs.get_album.notes,
@@ -43,8 +46,9 @@ const routes = (handler) => [
   {
     method: 'PUT',
     path: '/albums/{id}',
-    handler: handler.putAlbumByIdHandler,
     options: {
+      pre: [{ method: rateLimitMiddleware }],
+      handler: handler.putAlbumByIdHandler,
       tags: AlbumsSwaggerDocs.tags,
       description: AlbumsSwaggerDocs.put_album.description,
       notes: AlbumsSwaggerDocs.put_album.notes,
@@ -63,8 +67,9 @@ const routes = (handler) => [
   {
     method: 'DELETE',
     path: '/albums/{id}',
-    handler: handler.deleteAlbumByIdHandler,
     options: {
+      pre: [{ method: rateLimitMiddleware }],
+      handler: handler.deleteAlbumByIdHandler,
       tags: AlbumsSwaggerDocs.tags,
       description: AlbumsSwaggerDocs.delete_album.description,
       notes: AlbumsSwaggerDocs.delete_album.notes,

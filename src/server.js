@@ -54,6 +54,7 @@ const _exports = require('./api/exports');
 const ProducerService = require('./services/rabbitmq/ProducerService');
 const ExportsValidator = require('./validators/exports');
 const { SwaggerOptions } = require('./docs/swagger/SwaggerOption');
+const rateLimitMiddleware = require('./utils/rateLimiter');
 
 const init = async () => {
   const cacheService = new CacheService();
@@ -198,6 +199,8 @@ const init = async () => {
       },
     },
   ]);
+
+  server.ext('onPreAuth', rateLimitMiddleware);
 
   server.ext('onPreResponse', (request, h) => {
     // konteks response dari request
