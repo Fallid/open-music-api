@@ -1,4 +1,6 @@
 require('../../validators/playlists/schema');
+const SwaggerUploadsDocs = require('../../docs/swagger/api/uploads/swagger-docs');
+const failAction = require('../../utils/failAction');
 const {
   ImageHeadersSchema,
   AlbumCoverParamsSchema,
@@ -9,22 +11,11 @@ const routes = (handler) => [
   {
     method: 'POST',
     path: '/albums/{id}/covers',
-    handler: handler.postUploadImageHandler,
     options: {
-      plugins: {
-        'hapi-swagger': {
-          payloadType: 'form',
-        },
-      },
-      tags: ['api', 'Uploads'],
-      description: 'Endpoint untuk mengunggah cover album.',
-      notes: [
-        'Parameter path: id (string, album ID)',
-        'Body: file gambar (multipart/form-data)',
-        'Tipe file yang didukung: APNG, AVIF, GIF, JPEG, PNG, WebP',
-        'Ukuran maksimal: 500KB (512000 bytes)',
-        'Response: URL cover album yang telah diunggah',
-      ],
+      handler: handler.postUploadImageHandler,
+      tags: SwaggerUploadsDocs.tags,
+      description: SwaggerUploadsDocs.post_uploads.description,
+      notes: SwaggerUploadsDocs.post_uploads.notes,
       payload: {
         allow: 'multipart/form-data',
         multipart: true,
@@ -35,6 +26,13 @@ const routes = (handler) => [
         params: AlbumCoverParamsSchema,
         payload: UploadImagePayloadSchema,
         headers: ImageHeadersSchema,
+        failAction,
+      },
+      plugins: {
+        'hapi-swagger': {
+          payloadType: 'form',
+          responses: SwaggerUploadsDocs.post_uploads.responses,
+        },
       },
     },
   },

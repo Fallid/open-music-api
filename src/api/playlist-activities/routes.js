@@ -1,22 +1,26 @@
+const SwaggerPlaylistActivtiesDocs = require('../../docs/swagger/api/playlist-activities/swagger-docs');
+const rateLimitMiddleware = require('../../utils/rateLimiter');
 const { PlaylistParamsSchema } = require('../../validators/playlists/schema');
 
 const routes = (handler) => [
   {
     method: 'GET',
     path: '/playlists/{id}/activities',
-    handler: handler.getPlaylistActivitiesByPlaylistId,
     options: {
+      pre: [{ method: rateLimitMiddleware }],
+      handler: handler.getPlaylistActivitiesByPlaylistId,
       auth: 'openmusic_jwt',
+      tags: SwaggerPlaylistActivtiesDocs.tags,
+      description: SwaggerPlaylistActivtiesDocs.get_activites.description,
+      notes: SwaggerPlaylistActivtiesDocs.get_activites.notes,
+      validate: {
+        params: PlaylistParamsSchema,
+      },
       plugins: {
         'hapi-swagger': {
           security: [{ jwt: [] }],
+          responses: SwaggerPlaylistActivtiesDocs.get_activites.responses,
         },
-      },
-      tags: ['api', 'playlist-activities'],
-      description: 'Endpoint untuk mendapatkan aktivitas playlist (add/delete song).',
-      notes: 'Parameter: id (string, path)',
-      validate: {
-        params: PlaylistParamsSchema,
       },
     },
   },

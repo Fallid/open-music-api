@@ -5,8 +5,8 @@ const SwaggerAuthorizationResponse = {
       type: 'object',
       properties: {
         statusCode: { type: 'integer', example: 403 },
-        error: { type: 'string', example: 'Unauthorized' },
-        message: { type: 'string', example: 'Missing authentication' },
+        status: { type: 'string', example: 'fail' },
+        message: { type: 'string', example: 'Anda tidak berhak mengakses resource ini' },
       },
     },
   },
