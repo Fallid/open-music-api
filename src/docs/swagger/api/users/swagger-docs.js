@@ -1,7 +1,7 @@
 const SwaggerInvariantResponse = require('../../execptions/SwaggerInvariantResponse');
 
 const SwaggerUsersDocs = {
-  tags: ['api', 'users'],
+  tags: ['api', 'Users'],
   post_users: {
     description: 'Endpoint untuk mendaftarkan user baru.',
     notes: 'Parameter: username (string, max 50, required), password (string, max 255, required), fullname (string, max 255, required)',
