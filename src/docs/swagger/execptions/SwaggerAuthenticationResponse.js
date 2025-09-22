@@ -1,7 +1,7 @@
 const SwaggerAuthenticationResponse = (message = 'Missing authentication') => ({
   description: 'Error: Unauthorized',
   schema: {
-    type: 'json',
+    type: 'object',
     properties: {
       statusCode: { type: 'integer', example: 401 },
       status: { type: 'string', example: 'fail' },

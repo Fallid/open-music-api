@@ -1,7 +1,7 @@
 const SwaggerNotFoundResponse = (message) => ({
   description: 'Error: Not Found',
   schema: {
-    type: 'json',
+    type: 'object',
     properties: {
       statusCode: { type: 'number', example: 404 },
       status: { type: 'string', example: 'fail' },

@@ -2,7 +2,7 @@ const SwaggerInvariantResponse = {
   400: {
     description: 'Error: Bad Request',
     schema: {
-      type: 'json',
+      type: 'object',
       properties: {
         statusCode: { type: 'integer', example: 400 },
         status: { type: 'string', example: 'fail' },
