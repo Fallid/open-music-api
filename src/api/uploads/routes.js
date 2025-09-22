@@ -1,8 +1,8 @@
 require('../../validators/playlists/schema');
 const SwaggerUploadsDocs = require('../../docs/swagger/api/uploads/swagger-docs');
 const failAction = require('../../utils/failAction');
+const rateLimitMiddleware = require('../../utils/rateLimiter');
 const {
-  ImageHeadersSchema,
   AlbumCoverParamsSchema,
   UploadImagePayloadSchema,
 } = require('../../validators/uploads/schema');
@@ -12,6 +12,7 @@ const routes = (handler) => [
     method: 'POST',
     path: '/albums/{id}/covers',
     options: {
+      pre: [{ method: rateLimitMiddleware }],
       handler: handler.postUploadImageHandler,
       tags: SwaggerUploadsDocs.tags,
       description: SwaggerUploadsDocs.post_uploads.description,
@@ -25,7 +26,6 @@ const routes = (handler) => [
       validate: {
         params: AlbumCoverParamsSchema,
         payload: UploadImagePayloadSchema,
-        headers: ImageHeadersSchema,
         failAction,
       },
       plugins: {

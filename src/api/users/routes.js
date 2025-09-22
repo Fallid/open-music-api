@@ -1,3 +1,5 @@
+const SwaggerUsersDocs = require('../../docs/swagger/api/users/swagger-docs');
+const failAction = require('../../utils/failAction');
 const UsersPayloadSchema = require('../../validators/users/schema');
 
 const routes = (handler) => [
@@ -7,11 +9,17 @@ const routes = (handler) => [
     handler: handler.postUserHandler,
     options: {
       auth: false,
-      tags: ['api', 'users'],
-      description: 'Endpoint untuk mendaftarkan user baru.',
-      notes: 'Parameter: username (string, max 50, required), password (string, max 255, required), fullname (string, max 255, required)',
+      tags: SwaggerUsersDocs.tags,
+      description: SwaggerUsersDocs.post_users.description,
+      notes: SwaggerUsersDocs.post_users.notes,
       validate: {
         payload: UsersPayloadSchema,
+        failAction,
+      },
+      plugins: {
+        'hapi-swagger': {
+          responses: SwaggerUsersDocs.post_users.responses,
+        },
       },
     },
   },

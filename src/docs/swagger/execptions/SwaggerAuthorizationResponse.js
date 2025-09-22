@@ -2,7 +2,7 @@ const SwaggerAuthorizationResponse = {
   403: {
     description: 'Error: Unauthorized',
     schema: {
-      type: 'object',
+      type: 'json',
       properties: {
         statusCode: { type: 'integer', example: 403 },
         status: { type: 'string', example: 'fail' },

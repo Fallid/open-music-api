@@ -1,4 +1,5 @@
 const SwaggerInvariantResponse = require('../../execptions/SwaggerInvariantResponse');
+const SwaggerNotFoundResponse = require('../../execptions/SwaggerNotFoundResponse');
 
 const SwaggerUploadsDocs = {
   tags: ['api', 'Uploads'],
@@ -22,12 +23,14 @@ const SwaggerUploadsDocs = {
         },
       },
       400: SwaggerInvariantResponse[400],
+      404: SwaggerNotFoundResponse('Gagal menambahkan cover album. Album tidak ditemukan'),
       413: {
-        description: 'Request Entity Too Larga',
+        description: 'Request Entity Too Large',
         schema: {
           properties: {
-            error: { type: 'string', example: 'Request Entity Too Larga' },
-            message: { type: 'string', example: 'Payload content length greater than maximum allowed: 512000h' },
+            status: { type: 'string', example: 'fail' },
+            error: { type: 'string', example: 'Request Entity Too Large' },
+            message: { type: 'string', example: 'Payload content length greater than maximum allowed: 512000' },
           },
         },
       },
