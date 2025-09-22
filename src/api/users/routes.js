@@ -1,5 +1,6 @@
 const SwaggerUsersDocs = require('../../docs/swagger/api/users/swagger-docs');
 const failAction = require('../../utils/failAction');
+const rateLimitMiddleware = require('../../utils/rateLimiter');
 const UsersPayloadSchema = require('../../validators/users/schema');
 
 const routes = (handler) => [
@@ -8,6 +9,7 @@ const routes = (handler) => [
     path: '/users',
     handler: handler.postUserHandler,
     options: {
+      pre: [{ method: rateLimitMiddleware }],
       auth: false,
       tags: SwaggerUsersDocs.tags,
       description: SwaggerUsersDocs.post_users.description,
